@@ -1,0 +1,12 @@
+{
+  "name": "pbutlerg/328/diner",
+  "authors": [
+    {
+      "name": "Paul Butler",
+      "email": "Pbutler10@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
