@@ -11,6 +11,8 @@ session_start();
 
 //Require autoload file
 require_once ('vendor/autoload.php');
+require_once ('model/data-layer.php');
+require_once ('model/validation.php');
 
 //Instantiate Fat-Free
 $f3 = Base::instance();
@@ -32,20 +34,41 @@ $f3->route('GET /lunch', function(){
     echo $view->render('views/lunch.html');
 });
 
-$f3->route('GET|POST /order1', function(){
+$f3->route('GET|POST /order1', function($f3){
     //If the form has been submitted, add the data to the session
     //and send the user to the next order form
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //var_dump($_POST);
-        $_SESSION['food'] = $_POST['food'];
-        $_SESSION['meal'] = $_POST['meal'];
-        header('location: order2');
+
+        //If food is valid, store data
+        if(validFood($_POST['food'])) {
+            $_SESSION['food'] = $_POST['food'];
+        }
+
+        //If meal is valid, store data
+        if(validMeal($_POST['meal'])) {
+            $_SESSION['meal'] = $_POST['meal'];
+        }
+
+        //Otherwise, set an error variable in the hive
+        else {
+            $f3->set('errors["meal"]', 'Invalid meal');
+        }
+
+        //If there are no errors, redirect to order2
+        if (empty($f3->get('errors'))) {
+            header('location: order2');
+        }
     }
+
+    //Get the data from the model
+    $f3->set('meals', getMeals());
+
     $view = new Template();
     echo $view->render('views/orderForm1.html');
 });
 
-$f3->route('GET|POST /order2', function(){
+$f3->route('GET|POST /order2', function($f3){
     //If the form has been submitted, add the data to the session
     //and send the user to the summary page
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -53,6 +76,10 @@ $f3->route('GET|POST /order2', function(){
         $_SESSION['conds'] = implode(", ", $_POST['conds']);
         header('location: summary');
     }
+
+    //Get the data from the model
+    $f3->set('conds', getConds());
+
     $view = new Template();
     echo $view->render('views/orderForm2.html');
 });
