@@ -18,10 +18,11 @@ function validMeal($meal)
 
 function validCondiments($condiments)
 {
-    $validCondiments = getCondiments();
+    $validCondiments = getConds();
 
     foreach ($condiments as $userChoice) {
         if (!in_array($userChoice, $validCondiments)) {
+
             return false;
         }
     }

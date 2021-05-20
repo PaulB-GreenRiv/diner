@@ -86,14 +86,20 @@ $f3->route('GET|POST /order1', function($f3){
 });
 
 $f3->route('GET|POST /order2', function($f3){
+
+    $userConds = array();
+
     //If the form has been submitted, add the data to the session
     //and send the user to the summary page
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //var_dump($_POST);
 
         if (!empty($_POST['conds'])) {
-            if (validCondiments($_POST['conds'])) {
-                $_SESSION['conds'] = implode(", ", $_POST['conds']);
+
+            $userConds = $_POST['conds'];
+
+            if (validCondiments($userConds)) {
+                $_SESSION['conds'] = implode(", ", $userConds);
             }
             else {
                 $f3->set('errors["conds"]', 'Invalid selection');
@@ -107,6 +113,8 @@ $f3->route('GET|POST /order2', function($f3){
 
     //Get the data from the model
     $f3->set('conds', getConds());
+
+    $f3->set('userConds', $userConds);
 
     $view = new Template();
     echo $view->render('views/orderForm2.html');

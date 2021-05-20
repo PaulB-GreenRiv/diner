@@ -27,7 +27,11 @@
             <div class="col-sm-4">
                 <repeat group="{{ @conds }}" value="{{ @cond }}">
                     <label><input type="checkbox" name="conds[]"
-                                  id="{{ @cond }}" value="{{ @cond }}"> {{ ucfirst(@cond) }}
+                                  id="{{ @cond }}" value="{{ @cond }}"
+                        <check if="{{ in_array(@condiment, @userConds) }}">
+                            checked="checked"
+                        </check>
+                    > {{ ucfirst(@cond) }}
                         </input>
                     </label><br>
                 </repeat>
