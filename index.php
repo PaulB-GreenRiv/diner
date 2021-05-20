@@ -6,13 +6,14 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-//Start a session
-session_start();
-
 //Require autoload file
 require_once ('vendor/autoload.php');
 require_once ('model/data-layer.php');
 require_once ('model/validation.php');
+//require_once ('classes/order.php');
+
+//Start a session AFTER the autoload
+session_start();
 
 //Instantiate Fat-Free
 $f3 = Base::instance();
@@ -39,6 +40,12 @@ $f3->route('GET|POST /order1', function($f3){
     //Reinitialize session array
     $_SESSION = array();
 
+    //Instantiate order object
+    //$order = new Order();
+    //var_dump($order);
+
+    $_SESSION['order'] = new Order();
+
     //Initialize variables to store user input
     $userFood = "";
     $userMeal = "";
@@ -53,7 +60,7 @@ $f3->route('GET|POST /order1', function($f3){
 
         //If food is valid, store data
         if(validFood($_POST['food'])) {
-            $_SESSION['food'] = $userFood;
+            $_SESSION['order']->setFood($userFood);
         }
         else {
             $f3->set('errors["food"]', 'Invalid food');
@@ -61,7 +68,7 @@ $f3->route('GET|POST /order1', function($f3){
 
         //If meal is valid, store data
         if(!empty($userMeal) && validMeal($_POST['meal'])) {
-            $_SESSION['meal'] = $userMeal;
+            $_SESSION['order']->setMeal($userMeal);
         }
         //Otherwise, set an error variable in the hive
         else {
@@ -99,7 +106,7 @@ $f3->route('GET|POST /order2', function($f3){
             $userConds = $_POST['conds'];
 
             if (validCondiments($userConds)) {
-                $_SESSION['conds'] = implode(", ", $userConds);
+                $_SESSION['order']->setCondiments(implode(", ", $userConds));
             }
             else {
                 $f3->set('errors["conds"]', 'Invalid selection');
