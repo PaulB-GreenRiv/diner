@@ -1,6 +1,7 @@
 <include href="views/header.html"/>
 <body>
     <h1>Order Summary</h1>
+    <p>Order ID: {{ @orderId }}</p>
     <p>Thank you for ordering {{ @SESSION.order->getFood() }} for {{ @SESSION.order->getMeal() }}</p>
     <p>Condiments: {{ @SESSION.order->getCondiments() }}</p>
 

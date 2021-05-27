@@ -5,26 +5,30 @@
  *
 */
 
+class Validation
+{
 //Return true if a food is valid
-function validFood($food)
-{
-    return strlen(trim($food)) >= 2;
-}
-
-function validMeal($meal)
-{
-    return in_array($meal, getMeals());
-}
-
-function validCondiments($condiments)
-{
-    $validCondiments = getConds();
-
-    foreach ($condiments as $userChoice) {
-        if (!in_array($userChoice, $validCondiments)) {
-
-            return false;
-        }
+    static function validFood($food)
+    {
+        return strlen(trim($food)) >= 2;
     }
-    return true;
+
+    static function validMeal($meal)
+    {
+        return in_array($meal, DataLayer::getMeals());
+    }
+
+    static function validCondiments($condiments)
+    {
+        $validCondiments = DataLayer::getConds();
+
+        foreach ($condiments as $userChoice) {
+            if (!in_array($userChoice, $validCondiments)) {
+
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
