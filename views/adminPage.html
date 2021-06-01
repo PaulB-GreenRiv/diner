@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Admin Page</h1>
+
+    <table id="tblOrders">
+        <thead>
+            <tr>
+                <td>Order ID</td><td>Food</td><td>Meal</td><td>Condiments</td><td>Order Date</td>
+            </tr>
+        </thead>
+        <tbody>
+            <repeat group="{{ @result }}" value="{{ @order }}">
+                <tr>
+                    <td>{{ @order['order_id']}}</td>
+                    <td>{{ @order['food']}}</td>
+                    <td>{{ @order['meal']}}</td>
+                    <td>{{ @order['condiments']}}</td>
+                    <td>{{ @order['order_date']}}</td>
+                </tr>
+            </repeat>
+        </tbody>
+    </table>
+
+
+    <a href="{{ @BASE }}">Home Page</a>
+</body>
+</html>

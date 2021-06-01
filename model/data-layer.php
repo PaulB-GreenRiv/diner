@@ -4,15 +4,26 @@
  * Return data for the diner app
  *
 */
+
+require_once ($_SERVER['DOCUMENT_ROOT']."/../config.php");
+
 class DataLayer
 {
     // Add a field for the database object
     private $_dbh;
 
     // Define a constructor
-    function __construct($dbh)
+    function __construct()
     {
-        $this->_dbh = $dbh;
+        //Connect to the database
+        try {
+            $this->_dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            //echo "Connected to database!";
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+            die ("Golly Gee!");
+        }
     }
 
     //Saves an order to the database
@@ -37,6 +48,26 @@ class DataLayer
         $id = $this->_dbh->LastInsertId();
         return $id;
 
+    }
+
+    /**
+     * getOrders returns all orders from the database
+     * @return array An array of data rows
+     */
+    function getOrders()
+    {
+        //1. Define the query
+        $sql = "SELECT order_id, food, meal, condiments, order_date FROM orders";
+
+        //2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //3. Execute the query
+        $statement->execute();
+
+        //4. Return the result
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     // Get the meals for the order form

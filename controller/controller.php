@@ -118,4 +118,16 @@ class Controller
         $view = new Template();
         echo $view->render('views/summary.html');
     }
+
+    function adminPage()
+    {
+        $result = $GLOBALS['dataLayer']->getOrders();
+
+        $this->_f3->set('result', $result);
+
+        $view = new Template();
+        echo $view->render('views/adminPage.html');
+        /*$view = new Template();
+        echo $view->render('views/adminPage.html');*/
+    }
 }

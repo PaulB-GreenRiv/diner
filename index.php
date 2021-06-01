@@ -8,7 +8,6 @@ error_reporting(E_ALL);
 
 //Require autoload file
 require_once ('vendor/autoload.php');
-require_once ($_SERVER['DOCUMENT_ROOT']."/../config.php");
 
 //require_once ('model/data-layer.php');
 //require_once ('model/validation.php');
@@ -18,23 +17,19 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/../config.php");
 //If it comes before, it causes an error
 session_start();
 
-//Connect to the database
-try {
-    $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    //echo "Connected to database!";
-}
-catch (PDOException $e) {
-    echo $e->getMessage();
-    die ("Golly Gee!");
-}
+
 
 //Instantiate Fat-Free
 $f3 = Base::instance();
 $con = new Controller($f3);
-$dataLayer = new DataLayer($dbh);
+$dataLayer = new DataLayer();
 
 //Test my saveOrder method
 //$dataLayer->saveOrder(new Order("BLT", "Lunch", "Mayo"));
+/*echo "<pre>";
+$result = $dataLayer->getOrders();
+var_dump($result);
+echo "</pre>";*/
 
 //Define default route
 $f3->route('GET /', function(){
@@ -61,6 +56,10 @@ $f3->route('GET|POST /order2', function(){
 
 $f3->route('GET|POST /summary', function(){
     $GLOBALS['con']->summary();
+});
+
+$f3->route('GET|POST /adminPage', function (){
+    $GLOBALS['con']->adminPage();
 });
 
 //Run Fat-Free
