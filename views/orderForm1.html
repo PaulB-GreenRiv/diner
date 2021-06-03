@@ -40,13 +40,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Select a meal</label>
             <div class="col-sm-4">
-                <repeat group="{{ @meals }}" value="{{ @meal }}">
+                <repeat group="{{ @meals }}" key="{{ @meal_id }}" value="{{ @meal_name }}">
                     <label><input type="radio"
                                   name="meal"
-                                  id="{{ @meal }}"
-                                  value="{{ @meal }}"
-                                  <check if="{{ $meal == @userMeal }}">checked="checked"</check>
-                                > {{ ucfirst(@meal) }}
+                                  id="{{ @meal_id }}"
+                                  value="{{ @meal_id }}"
+                                  <check if="{{ $meal_id == @userMeal }}">checked="checked"</check>
+                                > {{ ucfirst(@meal_name) }}
                         </input>
                     </label><br>
                 </repeat>

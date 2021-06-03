@@ -30,7 +30,7 @@ class Controller
 
         //Initialize variables to store user input
         $userFood = "";
-        $userMeal = "";
+        $mealId = 0;
 
         //If the form has been submitted, add the data to the session
         //and send the user to the next order form
@@ -38,7 +38,7 @@ class Controller
             //var_dump($_POST);
 
             $userFood = $_POST['food'];
-            $userMeal = $_POST['meal'];
+            $mealId = $_POST['meal'];
 
             //If food is valid, store data
             if(Validation::validFood($_POST['food'])) {
@@ -49,8 +49,8 @@ class Controller
             }
 
             //If meal is valid, store data
-            if(!empty($userMeal) && Validation::validMeal($_POST['meal'])) {
-                $_SESSION['order']->setMeal($userMeal);
+            if(!empty($mealId) && Validation::validMeal($mealId)) {
+                $_SESSION['order']->setMeal($mealId);
             }
             //Otherwise, set an error variable in the hive
             else {
@@ -64,11 +64,12 @@ class Controller
         }
 
         //Get the data from the model
-        $this->_f3->set('meals', DataLayer::getMeals());
+        $meals = $GLOBALS['dataLayer']->getMeals();
+        $this->_f3->set('meals', $meals);
 
         //Store the user input in the hive
         $this->_f3->set('userFood', $userFood);
-        $this->_f3->set('userMeal', $userMeal);
+        $this->_f3->set('userMeal', $mealId);
 
         $view = new Template();
         echo $view->render('views/orderForm1.html');

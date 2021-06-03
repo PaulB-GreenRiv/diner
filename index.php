@@ -25,6 +25,8 @@ $con = new Controller($f3);
 $dataLayer = new DataLayer();
 
 //Test my saveOrder method
+//$result = $dataLayer->getMeals();
+//var_dump($result);
 //$dataLayer->saveOrder(new Order("BLT", "Lunch", "Mayo"));
 /*echo "<pre>";
 $result = $dataLayer->getOrders();

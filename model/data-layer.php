@@ -30,7 +30,7 @@ class DataLayer
     function saveOrder($order)
     {
         //1. Define the query
-        $sql = "Insert Into orders (food, meal, condiments)
+        $sql = "Insert Into orders (food, meal_id, condiments)
                 VALUES (:food, :meal, :condiments)";
 
         //2. Prepare the statement
@@ -57,7 +57,8 @@ class DataLayer
     function getOrders()
     {
         //1. Define the query
-        $sql = "SELECT order_id, food, meal, condiments, order_date FROM orders";
+        $sql = "SELECT order_id, food, meal_name, condiments, order_date FROM orders, meal
+                WHERE orders.meal_id = meal.meal_id";
 
         //2. Prepare the statement
         $statement = $this->_dbh->prepare($sql);
@@ -71,9 +72,32 @@ class DataLayer
     }
 
     // Get the meals for the order form
-    static function getMeals()
+    function getMeals()
     {
-        return array("breakfast", "lunch", "dinner");
+        //1. Define the query
+        $sql = "SELECT meal_id, meal_name FROM meal";
+
+        //2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //3. Bind the parameters
+        //$statement->bindParam(':food', $_SESSION['order']->getFood(), PDO::PARAM_STR);
+        //$statement->bindParam(':meal', $_SESSION['order']->getMeal(), PDO::PARAM_STR);
+        //$statement->bindParam(':condiments', $_SESSION['order']->getCondiments(), PDO::PARAM_STR);
+
+        //4. Execute the query
+        $statement->execute();
+
+        //5. Process the results (get OrderID)
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $meals = array();
+        foreach ($result as $row)
+        {
+            $meal_id = $row['meal_id'];
+            $meal_name = $row['meal_name'];
+            $meals[$meal_id] = $meal_name;
+        }
+        return $meals;
     }
 
     static function getConds()

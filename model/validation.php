@@ -13,9 +13,10 @@ class Validation
         return strlen(trim($food)) >= 2;
     }
 
-    static function validMeal($meal)
+    static function validMeal($mealId)
     {
-        return in_array($meal, DataLayer::getMeals());
+        $meals = $GLOBALS['dataLayer']->getMeals();
+        return array_key_exists($mealId, $meals);
     }
 
     static function validCondiments($condiments)
